@@ -12,9 +12,9 @@ const xlsx = require('xlsx')
     查看：获取指定目录的文件列表，读取文件内容，判断路径是否存在
 */
 class FileOperation {
-    constructor(filename, dir = './') {
+    constructor(filename, dir = '.') {
         this.filename = filename
-        this.dir = dir
+        this.dir = dir + '/'
     }
 
     /**

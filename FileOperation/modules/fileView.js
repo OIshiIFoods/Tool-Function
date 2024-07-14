@@ -32,10 +32,20 @@ function getFileListByDir(dir) {
 /**
  * 读取指定文件内容
  * @param {String} filePath 文件路径 
- * @returns {}
+ * @returns {} | @returns String
  */
 function readFileContent(filePath) {
-    const canReadType = {
+    const extMap = {
+        txt: 'txt',
+        html: 'txt',
+        css: 'txt',
+        js: 'txt',
+        ts: 'txt',
+        json: 'txt',
+        vue: 'txt',
+        xlsx: 'xlsx'
+    }
+    const readMethodMap = {
         xlsx: () => {
             const fileContent = xlsx.readFile(filePath); // 读取excel文件
             // 遍历excel每一张sheet的名字
@@ -45,10 +55,14 @@ function readFileContent(filePath) {
                 acc[name] = jsonData
                 return acc
             }, {})
+        },
+        txt: () => {
+            return '' + fs.readFileSync(filePath, 'utf-8')
         }
     }
     let fileExt = path.parse(filePath).ext.slice(1)
-    return canReadType[fileExt] ? canReadType[fileExt]() : false
+    fileExt = extMap[fileExt] ?? fileExt
+    return readMethodMap[fileExt] ? readMethodMap[fileExt]() : false
 }
 
 module.exports = {
